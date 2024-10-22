@@ -1,8 +1,14 @@
 const express = require("express");
+const { getALLUsers, getUserByID } = require("../controllers/user-controller");
 const { users } = require("../data/users.json");
+
 const router = express.Router();
 
+const { userModel, bookModel } = require("../models/index");
+
 // http://localhost:8081/
+
+// router.get("/", getALLUsers);
 router.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -11,22 +17,23 @@ router.get("/", (req, res) => {
 });
 
 // http://localhost:8081/:id
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
-  //console.log(req.params);
-  const user = users.find((each) => each.id === id);
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "User Doesn't  Exist!!",
-    });
-  }
-  return res.status(200).json({
-    success: true,
-    message: "User Found",
-    data: user,
-  });
-});
+router.get("/:id", getUserByID);
+// router.get("/:id", (req, res) => {
+//   const { id } = req.params;
+//   //console.log(req.params);
+//   const user = users.find((each) => each.id === id);
+//   if (!user) {
+//     return res.status(404).json({
+//       success: false,
+//       message: "User Doesn't  Exist!!",
+//     });
+//   }
+//   return res.status(200).json({
+//     success: true,
+//     message: "User Found",
+//     data: user,
+//   });
+// });
 
 router.post("/", (req, res) => {
   const { id, name, surname, email, subscriptionType, subscriptionDate } =
